@@ -55,6 +55,26 @@ html{scrollbar-color:var(--gold) #111;scrollbar-width:thin}
 @media(max-width:760px){.battle-gallery{grid-template-columns:1fr}.battle-card .battle-image{aspect-ratio:16/9}.card.visible{animation-duration:.48s}}
 @media(prefers-reduced-motion:reduce){.card.visible{animation:none}.battle-card img{transition:none}.card{will-change:auto}}
 
+
+/* GFF-inspired card system: hard edges, layered armor, and a controlled gold sweep. */
+.card{isolation:isolate;overflow:hidden;border-color:#3a3a35;clip-path:polygon(0 0,calc(100% - 17px) 0,100% 17px,100% 100%,17px 100%,0 calc(100% - 17px));background:linear-gradient(135deg,#202018 0%,#121212 48%,#0b0b0b 100%);box-shadow:inset 0 1px 0 #ffffff12;transform:translate3d(0,28px,0) scale(.975);will-change:transform,opacity}
+.card::before{content:"";position:absolute;z-index:-1;inset:-20% auto -20% -55%;width:42%;background:linear-gradient(100deg,transparent,#ffbe0030,transparent);transform:skewX(-18deg) translateX(-160%);transition:transform .7s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.card::after{content:"";position:absolute;top:0;right:0;width:17px;height:17px;background:var(--gold);clip-path:polygon(100% 0,100% 100%,0 0);opacity:.8;pointer-events:none}
+.card.visible{animation:card-enter .72s cubic-bezier(.16,.8,.2,1) both;animation-delay:var(--reveal-delay,0ms)}
+.card:hover{border-color:var(--gold);box-shadow:0 14px 36px #ffbe0017,inset 0 0 0 1px #ffbe0030;transform:translateY(-5px)}
+.card:hover::before{transform:skewX(-18deg) translateX(410%)}
+.card .num{display:inline-flex;align-items:center;gap:9px;color:var(--gold);font-weight:900}
+.card .num::before{content:"";display:inline-block;width:18px;height:2px;background:var(--gold);box-shadow:5px 4px 0 #ffbe0045}
+.battle-card .battle-image{border-bottom:2px solid var(--gold)}
+.battle-card .battle-copy{position:relative;background:linear-gradient(110deg,#17170f,#111 70%)}
+.btn,.contact{position:relative;isolation:isolate;overflow:hidden;transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}
+.btn::after,.contact::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,#fff7 48%,transparent 70%);transform:translateX(-130%);transition:transform .35s ease;pointer-events:none;mix-blend-mode:screen}
+.btn:hover::after,.contact:hover::after{transform:translateX(130%)}
+.btn:active,.contact:active{transform:translateY(1px) scale(.985);filter:brightness(1.12)}
+.title .scramble-char{color:inherit}
+@keyframes card-enter{0%{opacity:0;transform:translate3d(0,28px,0) scale(.975);filter:blur(4px)}65%{opacity:1;filter:blur(0);transform:translate3d(0,-3px,0) scale(1.005)}100%{opacity:1;transform:translate3d(0,0,0) scale(1);filter:blur(0)}}
+@media(prefers-reduced-motion:reduce){.card,.card.visible{animation:none!important;opacity:1;transform:none;filter:none;will-change:auto}.card::before,.btn::after,.contact::after{display:none}.btn,.contact{transition:none}}
+
 </style></head>
 <body>
 <header class="nav"><div class="wrap navin"><a class="brand" href="#top"><img src="/icon.png" alt="NADEX NATION guild logo" width="96" height="32"></a><button class="menu" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navlinks"><i></i><i></i><i></i></button><nav class="links" id="navlinks"><a href="#features">Features</a><a href="#battlefield">Battlefield</a><a href="#events">Tournaments</a><a href="#rules">Rules</a><a href="#requirements">Requirements</a><a class="btn" href="#join">Join the guild ↗</a></nav></div></header>
@@ -67,5 +87,34 @@ html{scrollbar-color:var(--gold) #111;scrollbar-width:thin}
 <section class="content" id="requirements"><div class="wrap"><div class="heading"><div><span class="eyebrow">Before applying</span><h2>Meet the requirements.</h2></div></div><div class="requirements"><div class="req"><span>Player level</span><strong>Level 30+</strong></div><div class="req"><span>Minimum rank</span><strong>Platinum+</strong></div><div class="req"><span>Prime requirement</span><strong>Prime Level 2+</strong></div></div></div></section>
 <section class="wrap" id="join"><div class="join"><span class="eyebrow">Your next squad starts here</span><h2>Ready to join<br>the nation?</h2><p>Contact either guild representative on Instagram. Check the requirements first, then introduce yourself.</p><div class="contacts"><a class="contact" href="https://www.instagram.com/Nadex_Naruto/" target="_blank" rel="noopener noreferrer">@Nadex_Naruto ↗</a><a class="contact" href="https://www.instagram.com/Nadex_Naman/" target="_blank" rel="noopener noreferrer">@Nadex_Naman ↗</a></div></div></section></main>
 <footer><div class="wrap foot"><strong>NADEX NATION</strong><span>RESPECT THE GUILD. EARN THE GLORY.</span><span>Fan-made guild site. Not affiliated with Garena.</span></div></footer>
-<script>(()=>{const b=document.querySelector('.menu'),n=document.querySelector('#navlinks');function close(){b.setAttribute('aria-expanded','false');b.classList.remove('active');n.classList.remove('open')}b.addEventListener('click',()=>{const open=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(open));n.classList.toggle('open',open)});n.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape'){close();b.focus()}});const cards=[...document.querySelectorAll('.card')];if('IntersectionObserver'in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){const i=cards.indexOf(e.target);e.target.style.transitionDelay=(i%3)*75+'ms';e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.12});cards.forEach(c=>io.observe(c))}else cards.forEach(c=>c.classList.add('visible'))})();</script>
+<script>(()=>{const b=document.querySelector('.menu'),n=document.querySelector('#navlinks');function close(){b.setAttribute('aria-expanded','false');b.classList.remove('active');n.classList.remove('open')}b.addEventListener('click',()=>{const open=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(open));n.classList.toggle('open',open)});n.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape'){close();b.focus()}});const cards=[...document.querySelectorAll('.card')];if('IntersectionObserver'in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){const i=cards.indexOf(e.target);e.target.style.setProperty('--reveal-delay',(i%3)*105+'ms');e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.12});cards.forEach(c=>io.observe(c))}else cards.forEach(c=>c.classList.add('visible'))})();
+<script>
+(()=>{
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ // Scramble each visible hero text node, then restore the exact authored copy.
+ if(!reduce){
+  const hero=document.querySelector('.title');
+  if(hero){
+   const nodes=[];const walk=n=>{for(const c of n.childNodes){if(c.nodeType===3&&c.nodeValue.trim())nodes.push(c);else if(c.nodeType===1&&c.tagName!=='BR')walk(c)}};walk(hero);
+   const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%+*';
+   nodes.forEach((node,index)=>{const original=node.nodeValue;const chars=Array.from(original);const start=performance.now()+index*145;const duration=760;
+    const tick=now=>{const p=Math.max(0,Math.min(1,(now-start)/duration));node.nodeValue=chars.map((ch,i)=>{if(!/[A-Za-z0-9]/.test(ch))return ch;const settled=p*chars.length>i+Math.max(2,chars.length*.12);return settled?ch:alphabet[Math.floor(Math.random()*alphabet.length)]}).join('');if(p<1)requestAnimationFrame(tick);else node.nodeValue=original};requestAnimationFrame(tick);
+   });
+  }
+ }
+ // A tiny synthesized Free Fire-style shot on intentional CTA clicks; no external audio file.
+ const targets=document.querySelectorAll('.actions .btn,.nav .btn,.join .contact');
+ let audio;
+ const fire=()=>{try{
+  const Ctx=window.AudioContext||window.webkitAudioContext;if(!Ctx)return;
+  audio=audio||new Ctx();if(audio.state==='suspended')audio.resume();const ctx=audio,t=ctx.currentTime;
+  const length=Math.floor(ctx.sampleRate*.075),buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);
+  for(let i=0;i<length;i++){const fade=1-i/length;data[i]=(Math.random()*2-1)*fade*fade}
+  const noise=ctx.createBufferSource();noise.buffer=buffer;const filter=ctx.createBiquadFilter();filter.type='bandpass';filter.frequency.setValueAtTime(1550,t);filter.frequency.exponentialRampToValueAtTime(420,t+.07);filter.Q.value=.8;
+  const ng=ctx.createGain();ng.gain.setValueAtTime(.0001,t);ng.gain.exponentialRampToValueAtTime(.22,t+.004);ng.gain.exponentialRampToValueAtTime(.0001,t+.075);noise.connect(filter);filter.connect(ng);ng.connect(ctx.destination);noise.start(t);noise.stop(t+.08);
+  const osc=ctx.createOscillator(),og=ctx.createGain();osc.type='triangle';osc.frequency.setValueAtTime(175,t);osc.frequency.exponentialRampToValueAtTime(48,t+.055);og.gain.setValueAtTime(.0001,t);og.gain.exponentialRampToValueAtTime(.13,t+.003);og.gain.exponentialRampToValueAtTime(.0001,t+.06);osc.connect(og);og.connect(ctx.destination);osc.start(t);osc.stop(t+.065);
+ }catch(_){/* Audio is an enhancement; navigation must always work. */}};
+ targets.forEach(el=>el.addEventListener('click',fire,{passive:true}));
+})();
+</script>
 </body></html>
