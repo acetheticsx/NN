@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nn-acetheticsx.vercel.app/sitemap.xml
